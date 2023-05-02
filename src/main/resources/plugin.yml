@@ -1,0 +1,4 @@
+name: ItemSave
+version: '${project.version}'
+main: goldenshadow.itemsave.ItemSave
+api-version: 1.18
