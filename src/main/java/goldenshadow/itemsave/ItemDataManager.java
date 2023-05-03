@@ -1,11 +1,12 @@
-package goldenshadow.aurum.items;
+package goldenshadow.itemsave;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import goldenshadow.aurum.Aurum;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.io.BukkitObjectInputStream;
 import org.bukkit.util.io.BukkitObjectOutputStream;
 
@@ -22,8 +23,8 @@ public class ItemDataManager {
         try {
             Gson gson = new GsonBuilder()
                     .create();
-            File itemFile = new File(Aurum.getPlugin().getDataFolder().getAbsolutePath() + "/items.json");
-            File groupFile = new File(Aurum.getPlugin().getDataFolder().getAbsolutePath() + "/item_groups.json");
+            File itemFile = new File(ItemSave.getPlugin().getDataFolder().getAbsolutePath() + "/items.json");
+            File groupFile = new File(ItemSave.getPlugin().getDataFolder().getAbsolutePath() + "/item_groups.json");
 
             if (itemFile.exists()) {
                 Reader reader = new FileReader(itemFile);
@@ -64,8 +65,8 @@ public class ItemDataManager {
         try {
             Gson gson = new GsonBuilder()
                     .create();
-            File file = new File(Aurum.getPlugin().getDataFolder().getAbsolutePath() + "/items.json");
-            File file2 = new File(Aurum.getPlugin().getDataFolder().getAbsolutePath() + "/item_groups.json");
+            File file = new File(ItemSave.getPlugin().getDataFolder().getAbsolutePath() + "/items.json");
+            File file2 = new File(ItemSave.getPlugin().getDataFolder().getAbsolutePath() + "/item_groups.json");
             file.getParentFile().mkdir();
             file2.getParentFile().mkdir();
 
@@ -195,8 +196,22 @@ public class ItemDataManager {
             return i;
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
-            return new ItemStack(Material.RED_WOOL);
+            return getErrorItem();
         }
+    }
+
+    private static ItemStack getErrorItem() {
+        ItemStack itemStack = new ItemStack(Material.RED_WOOL);
+        ItemMeta meta = itemStack.getItemMeta();
+        assert meta != null;
+        meta.setDisplayName(ChatColor.DARK_RED + String.valueOf(ChatColor.BOLD) + "ERROR");
+        List<String> lore = new ArrayList<>();
+        lore.add(ChatColor.GRAY + "The item that was supposed to be loaded");
+        lore.add(ChatColor.GRAY + "has probably been deleted but not removed");
+        lore.add(ChatColor.GRAY + "from a group.");
+        meta.setLore(lore);
+        itemStack.setItemMeta(meta);
+        return itemStack;
     }
 
 }
