@@ -1,4 +1,13 @@
 name: ItemSave
 version: '${project.version}'
+description: ItemSave makes it possible to save custom items for later use. Items can also be put in groups so that the entire group can be given
 main: goldenshadow.itemsave.ItemSave
+author: _GoldenShadow
 api-version: 1.18
+commands:
+  itemsave:
+    description: General purpose command to save and load saved item and groups
+    aliases:
+      - is
+      - items
+    permission: ItemSave.admin
